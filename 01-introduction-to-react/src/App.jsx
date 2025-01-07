@@ -1,75 +1,28 @@
 import { useState } from "react";
 
-function Button(props) {
-  const increment = () => props.setState((v) => v + 1);
-
-  return (
-    <button onClick={increment}>{props.text}</button>
-  );
-}
-
-function StatisticLine(props) {
-  return (
-    <tr>
-      <td>{props.text}</td>
-      <td>{props.value}{props.suffix}</td>
-    </tr>
-  );
-};
-
-function Statistics(props) {
-  const all = (props.good + props.neutral + props.bad);
-  const average = (props.good - props.bad) / all;
-  const positive = (props.good / all) * 100;
-
-  const content = all === 0
-    ? <p>No feedback given</p>
-    : <table>
-        <tbody>
-          <StatisticLine text="Good" value={props.good} />
-          <StatisticLine text="Neutral" value={props.neutral} />
-          <StatisticLine text="Bad" value={props.bad} />
-          <StatisticLine text="All" value={all} />
-          <StatisticLine text="Average" value={average} />
-          <StatisticLine text="Positive" value={positive} suffix="%" />
-        </tbody>
-      </table>;
-
-  return (
-    <>
-      <h1>Statistics</h1>
-
-      <div>
-        {content}
-      </div>
-    </>
-  );
-};
-
 export default function App() {
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
+  const anecdotes = [
+    "If it hurts, do it more often.",
+    "Adding manpower to a late software project makes it later!",
+    "The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
+    "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
+    "Premature optimization is the root of all evil.",
+    "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
+    "Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.",
+    "The only way to go fast, is to go well.",
+  ];
+
+  const [selected, setSelected] = useState(0);
+
+  const setRandomAnecdote = () => {
+    const rnd = Math.floor(Math.random() * anecdotes.length);
+    setSelected(rnd);
+  };
 
   return (
     <div>
-      <div>
-        <h1>Give feedback</h1>
-
-        <div>
-          <Button text="Good" setState={setGood} />
-          <Button text="Neutral" setState={setNeutral} />
-          <Button text="Bad" setState={setBad} />
-        </div>
-      </div>
-
-      <div>
-        <Statistics
-          good={good}
-          neutral={neutral}
-          bad={bad}
-        />
-      </div>
+      <p>{anecdotes[selected]}</p>
+      <button onClick={setRandomAnecdote}>Next anecdote</button>
     </div>
   );
 };
