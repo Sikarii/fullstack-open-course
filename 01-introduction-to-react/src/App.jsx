@@ -5,17 +5,23 @@ function Statistics(props) {
   const average = (props.good - props.bad) / all;
   const positive = (props.good / all) * 100;
 
-  return (
-    <>
-      <h1>Statistics</h1>
-
-      <div>
+  const content = all === 0
+    ? <p>No feedback given</p>
+    : <>
         <p>Good: {props.good}</p>
         <p>Neutral: {props.neutral}</p>
         <p>Bad: {props.bad}</p>
         <p>All: {all}</p>
         <p>Average: {average}</p>
         <p>Positive: {positive}%</p>
+      </>;
+
+  return (
+    <>
+      <h1>Statistics</h1>
+
+      <div>
+        {content}
       </div>
     </>
   );
