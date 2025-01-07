@@ -10,7 +10,10 @@ function Button(props) {
 
 function StatisticLine(props) {
   return (
-    <p>{props.text}: {props.value}</p>
+    <tr>
+      <td>{props.text}</td>
+      <td>{props.value}{props.suffix}</td>
+    </tr>
   );
 };
 
@@ -21,14 +24,16 @@ function Statistics(props) {
 
   const content = all === 0
     ? <p>No feedback given</p>
-    : <>
-        <StatisticLine text="Good" value={props.good} />
-        <StatisticLine text="Neutral" value={props.neutral} />
-        <StatisticLine text="Bad" value={props.bad} />
-        <StatisticLine text="All" value={all} />
-        <StatisticLine text="Average" value={average} />
-        <StatisticLine text="Positive" value={positive} />
-      </>;
+    : <table>
+        <tbody>
+          <StatisticLine text="Good" value={props.good} />
+          <StatisticLine text="Neutral" value={props.neutral} />
+          <StatisticLine text="Bad" value={props.bad} />
+          <StatisticLine text="All" value={all} />
+          <StatisticLine text="Average" value={average} />
+          <StatisticLine text="Positive" value={positive} suffix="%" />
+        </tbody>
+      </table>;
 
   return (
     <>
