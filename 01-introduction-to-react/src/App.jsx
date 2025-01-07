@@ -12,7 +12,13 @@ export default function App() {
     "The only way to go fast, is to go well.",
   ];
 
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
   const [selected, setSelected] = useState(0);
+
+  const voteAnecdote = () => {
+    const newVotes = votes.map((v, i) => i === selected ? v + 1 : v);
+    setVotes(newVotes);
+  };
 
   const setRandomAnecdote = () => {
     const rnd = Math.floor(Math.random() * anecdotes.length);
@@ -22,7 +28,11 @@ export default function App() {
   return (
     <div>
       <p>{anecdotes[selected]}</p>
-      <button onClick={setRandomAnecdote}>Next anecdote</button>
+      <p>Votes: {votes[selected]}</p>
+      <div>
+        <button onClick={voteAnecdote}>Vote</button>
+        <button onClick={setRandomAnecdote}>Next anecdote</button>
+      </div>
     </div>
   );
 };
