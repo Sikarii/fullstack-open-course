@@ -13,11 +13,22 @@ export default function App() {
   ];
 
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
+
   const [selected, setSelected] = useState(0);
+  const [topAnecdote, setTopAnecdote] = useState(0);
 
   const voteAnecdote = () => {
-    const newVotes = votes.map((v, i) => i === selected ? v + 1 : v);
-    setVotes(newVotes);
+    const v = [...votes];
+
+    const topVotes = v[topAnecdote];
+    const newVotes = v[selected] + 1;
+
+    v[selected] = newVotes;
+    setVotes(v);
+
+    if (newVotes > topVotes) {
+      setTopAnecdote(selected);
+    }
   };
 
   const setRandomAnecdote = () => {
@@ -27,11 +38,21 @@ export default function App() {
 
   return (
     <div>
-      <p>{anecdotes[selected]}</p>
-      <p>Votes: {votes[selected]}</p>
       <div>
-        <button onClick={voteAnecdote}>Vote</button>
-        <button onClick={setRandomAnecdote}>Next anecdote</button>
+        <h1>Anecdote of the day</h1>
+
+        <p>{anecdotes[selected]}</p>
+        <p>Votes: {votes[selected]}</p>
+        <div>
+          <button onClick={voteAnecdote}>Vote</button>
+          <button onClick={setRandomAnecdote}>Next anecdote</button>
+        </div>
+      </div>
+
+      <div>
+        <h1>Anecdote with most votes</h1>
+        <p>{anecdotes[topAnecdote]}</p>
+        <p>Votes: {votes[topAnecdote]}</p>
       </div>
     </div>
   );
