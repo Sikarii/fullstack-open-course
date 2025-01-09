@@ -1,56 +1,53 @@
-import Course from "./components/Course";
+import { useState } from "react";
 
 export default function App() {
-  const courses = [
+  const initialPersons = [
     {
-      id: 1,
-      name: "Half Stack application development",
-      parts: [
-        {
-          id: 1,
-          name: "Fundamentals of React",
-          exercises: 10,
-        },
-        {
-          id: 2,
-          name: "Using props to pass data",
-          exercises: 7,
-        },
-        {
-          id: 3,
-          name: "State of a component",
-          exercises: 14,
-        },
-        {
-          id: 4,
-          name: "Redux",
-          exercises: 11,
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Node.js",
-      parts: [
-        {
-          id: 1,
-          name: "Routing",
-          exercises: 3,
-        },
-        {
-          id: 2,
-          name: "Middlewares",
-          exercises: 7,
-        },
-      ],
+      name: "Arto Hellas",
     },
   ];
 
+  const [persons, setPersons] = useState(initialPersons);
+  const [newName, setNewName] = useState("");
+
+  const addPerson = (event) => {
+    event.preventDefault();
+
+    setPersons((old) => [
+      ...old,
+      {
+        name: newName,
+      },
+    ]);
+  };
+
   return (
-    <>
-      {courses.map((c) =>
-        <Course course={c} />
-      )}
-    </>
+    <div>
+      <h2>Phonebook</h2>
+
+      <form onSubmit={addPerson}>
+        <div>
+          Name:
+          <input
+            type="text"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <button type="submit">Add</button>
+        </div>
+      </form>
+
+      <div>
+        <h1>Numbers</h1>
+        <ul>
+          {persons.map((p) =>
+            <li key={p.name}>{p.name}</li>
+          )}
+        </ul>
+      </div>
+    </div>
   );
 };
