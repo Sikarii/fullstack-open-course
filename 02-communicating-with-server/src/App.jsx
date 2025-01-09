@@ -13,6 +13,12 @@ export default function App() {
   const addPerson = (event) => {
     event.preventDefault();
 
+    const isInBook = persons.some((x) => x.name === newName);
+
+    if (isInBook) {
+      return alert(`${newName} is already added to the phonebook`);
+    }
+
     setPersons((old) => [
       ...old,
       {
