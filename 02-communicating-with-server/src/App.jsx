@@ -4,26 +4,31 @@ export default function App() {
   const initialPersons = [
     {
       name: "Arto Hellas",
+      number: "040-123456",
     },
   ];
 
   const [persons, setPersons] = useState(initialPersons);
-  const [newName, setNewName] = useState("");
+
+  const [newPerson, setNewPerson] = useState({
+    name: "",
+    number: "",
+  });
 
   const addPerson = (event) => {
     event.preventDefault();
 
-    const isInBook = persons.some((x) => x.name === newName);
+    const isInBook = persons.some((x) => x.name === newPerson.name);
 
     if (isInBook) {
-      return alert(`${newName} is already added to the phonebook`);
+      return alert(`${newPerson.name} is already added to the phonebook`);
     }
 
     setPersons((old) => [
       ...old,
       {
-        name: newName,
-      },
+        ...newPerson,
+      }
     ]);
   };
 
@@ -33,12 +38,23 @@ export default function App() {
 
       <form onSubmit={addPerson}>
         <div>
-          Name:
-          <input
-            type="text"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-          />
+          <div>
+            Name:
+            <input
+              type="text"
+              value={newPerson.name}
+              onChange={(e) => setNewPerson((v) => ({ ...v, name: e.target.value }))}
+            />
+          </div>
+
+          <div>
+            Number:
+            <input
+              type="tel"
+              value={newPerson.number}
+              onChange={(e) => setNewPerson((v) => ({ ...v, number: e.target.value }))}
+            />
+          </div>
         </div>
 
         <div>
@@ -50,7 +66,9 @@ export default function App() {
         <h1>Numbers</h1>
         <ul>
           {persons.map((p) =>
-            <li key={p.name}>{p.name}</li>
+            <li key={p.name}>
+              <p>{p.name} {p.number}</p>
+            </li>
           )}
         </ul>
       </div>
