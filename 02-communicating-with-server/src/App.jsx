@@ -1,11 +1,11 @@
-import axios from "axios";
-
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import AddPersonForm from "./components/AddPersonForm";
 
 import PersonsList from "./components/PersonsList";
 import PersonsFilter from "./components/PersonsFilter";
+
+import * as phonebook from "./api";
 
 export default function App() {
   const [search, setSearch] = useState("");
@@ -17,20 +17,18 @@ export default function App() {
   });
 
   useEffect(() => {
-    const fetchPersons = async () => {
-      const result = await axios.get("http://localhost:3001/persons");
-      setPersons(result.data);
-    };
-
-    fetchPersons();
+    phonebook
+      .getAll()
+      .then((data) => setPersons(data));
   }, []);
 
-  // Ideally useMemo is used here
-  const filteredPersons = persons.filter((p) =>
-    p.name.toLowerCase().indexOf(search.toLowerCase()) != -1
-  );
+  const filteredPersons = useMemo(() => {
+    return persons.filter((p) =>
+      p.name.toLowerCase().indexOf(search.toLowerCase()) != -1
+    );
+  }, [persons, search]);
 
-  const addPerson = (event) => {
+  const addPerson = async (event) => {
     event.preventDefault();
 
     const isInBook = persons.some((x) => x.name === newPerson.name);
@@ -39,12 +37,9 @@ export default function App() {
       return alert(`${newPerson.name} is already added to the phonebook`);
     }
 
-    setPersons((old) => [
-      ...old,
-      {
-        ...newPerson,
-      }
-    ]);
+    const data = await phonebook.create(newPerson);
+
+    setPersons((old) => [...old, data]);
 
     setNewPerson({
       name: "",
@@ -73,7 +68,9 @@ export default function App() {
 
       <h3>Numbers</h3>
 
-      <PersonsList persons={filteredPersons} />
+      <PersonsList
+        persons={filteredPersons}
+      />
     </div>
   );
 };

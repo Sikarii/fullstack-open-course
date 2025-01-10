@@ -4,7 +4,7 @@ export default function List(props) {
   return (
     <ul>
       {props.persons.map((p) =>
-        <li key={p.name}>
+        <li key={p.id}>
           <Person {...p} />
         </li>
       )}
