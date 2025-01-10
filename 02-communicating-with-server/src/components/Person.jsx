@@ -1,5 +1,8 @@
 export default function Person(props) {
   return (
-    <p>{props.name} {props.number}</p>
+    <div>
+      <p>{props.name} {props.number}</p>
+      <button onClick={props.delete}>Delete</button>
+    </div>
   );
 };

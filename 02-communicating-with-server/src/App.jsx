@@ -70,6 +70,7 @@ export default function App() {
 
       <PersonsList
         persons={filteredPersons}
+        onDelete={(id) => setPersons((v) => v.filter((x) => x.id !== id))}
       />
     </div>
   );
