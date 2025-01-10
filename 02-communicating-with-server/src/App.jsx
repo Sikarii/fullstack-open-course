@@ -31,15 +31,31 @@ export default function App() {
   const addPerson = async (event) => {
     event.preventDefault();
 
-    const isInBook = persons.some((x) => x.name === newPerson.name);
+    const bookIdx = persons.findIndex((x) =>
+      x.name.toLowerCase() === newPerson.name.toLowerCase()
+    );
 
-    if (isInBook) {
-      return alert(`${newPerson.name} is already added to the phonebook`);
+    if (bookIdx !== -1) {
+      const confirmed = confirm(`${newPerson.name} is already added to the phonebook, replace the old number with a new one?`);
+      if (!confirmed) {
+        return;
+      }
+
+      const newBook = [...persons];
+
+      const p = {
+        ...newBook[bookIdx],
+        number: newPerson.number,
+      };
+
+      newBook[bookIdx] = p;
+      await phonebook.update(p.id, p);
+
+      setPersons(newBook);
+    } else {
+      const data = await phonebook.create(newPerson);
+      setPersons((old) => [...old, data]);
     }
-
-    const data = await phonebook.create(newPerson);
-
-    setPersons((old) => [...old, data]);
 
     setNewPerson({
       name: "",

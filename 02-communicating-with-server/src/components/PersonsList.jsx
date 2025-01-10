@@ -4,7 +4,10 @@ import * as phonebook from "../api";
 
 export default function List(props) {
   const deletePerson = async (person) => {
-    confirm(`Are you sure you want to delete ${person.name}?`);
+    const confirmed = confirm(`Are you sure you want to delete ${person.name}?`);
+    if (!confirmed) {
+      return;
+    }
 
     await phonebook.delete(person.id);
     props.onDelete?.(person.id);
