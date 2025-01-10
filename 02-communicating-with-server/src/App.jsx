@@ -1,5 +1,10 @@
 import { useState } from "react";
 
+import AddPersonForm from "./components/AddPersonForm";
+
+import PersonsList from "./components/PersonsList";
+import PersonsFilter from "./components/PersonsFilter";
+
 export default function App() {
   const initialPersons = [
     {
@@ -49,61 +54,35 @@ export default function App() {
         ...newPerson,
       }
     ]);
+
+    setNewPerson({
+      name: "",
+      number: ""
+    });
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
 
-      <div>
-        Filter shown with:
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-       />
-      </div>
+      <PersonsFilter
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
-      <div>
-        <h1>Add new</h1>
+      <h3>Add new</h3>
 
-        <form onSubmit={addPerson}>
-          <div>
-            <div>
-              Name:
-              <input
-                type="text"
-                value={newPerson.name}
-                onChange={(e) => setNewPerson((v) => ({ ...v, name: e.target.value }))}
-              />
-            </div>
+      <AddPersonForm
+        name={newPerson.name}
+        number={newPerson.number}
+        nameChanged={(name) => setNewPerson((v) => ({ ...v, name: name }))}
+        numberChanged={(number) => setNewPerson((v) => ({ ...v, number: number }))}
+        submit={addPerson}
+      />
 
-            <div>
-              Number:
-              <input
-                type="tel"
-                value={newPerson.number}
-                onChange={(e) => setNewPerson((v) => ({ ...v, number: e.target.value }))}
-              />
-            </div>
-          </div>
+      <h3>Numbers</h3>
 
-          <div>
-            <button type="submit">Add</button>
-          </div>
-        </form>
-      </div>
-
-      <div>
-        <h1>Numbers</h1>
-        <ul>
-          {filteredPersons.map((p) =>
-            <li key={p.name}>
-              <p>{p.name} {p.number}</p>
-            </li>
-          )}
-        </ul>
-      </div>
+      <PersonsList persons={filteredPersons} />
     </div>
   );
 };
