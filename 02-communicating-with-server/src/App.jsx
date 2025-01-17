@@ -8,6 +8,7 @@ import PersonsFilter from "./components/PersonsFilter";
 import * as phonebook from "./api";
 
 import { NotificationContainer, useNotification } from "./components/Notification";
+import { AxiosError } from "axios";
 
 export default function App() {
   const notification = useNotification();
@@ -52,11 +53,23 @@ export default function App() {
         number: newPerson.number,
       };
 
-      newBook[bookIdx] = p;
-      await phonebook.update(p.id, p);
+      try {
+        await phonebook.update(p.id, p);
 
-      setPersons(newBook);
-      notification.success(`Updated ${newPerson.name}`);
+        newBook[bookIdx] = p;
+
+        setPersons(newBook);
+        notification.success(`Updated ${newPerson.name}`);
+      } catch (err) {
+        if (err instanceof AxiosError && err.status === 404) {
+          const people = persons.filter((x) => x.id !== p.id);
+
+          notification.error(`Information of ${p.name} has already been deleted from the server`);
+          return setPersons(people);
+        }
+
+        throw err;
+      }
     } else {
       const data = await phonebook.create(newPerson);
 

@@ -9,13 +9,13 @@ const getAll = async () => {
   return result.data;
 };
 
-const create = async (note) => {
-  const result = await client.post("/persons", note);
+const create = async (person) => {
+  const result = await client.post("/persons", person);
   return result.data;
 };
 
-const update = async (id, note) => {
-  const result = await client.put(`/persons/${id}`, note);
+const update = async (id, person) => {
+  const result = await client.put(`/persons/${id}`, person);
   return result.data;
 };
 
