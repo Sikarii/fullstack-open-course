@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-import Country from "./components/Country";
 import Results from "./components/Results";
 
 import * as countryApi from "./api";
@@ -10,12 +9,9 @@ export default function App() {
   const [countries, setCountries] = useState(null);
 
   useEffect(() => {
-    const getCountries = async () => {
-      const data = await countryApi.getAll();
-      setCountries(data);
-    };
-
-    getCountries();
+    countryApi
+      .getAll()
+      .then((data) => setCountries(data));
   }, []);
 
   if (countries === null) {

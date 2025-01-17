@@ -1,15 +1,22 @@
+import { useState } from "react";
 import Country from "./Country";
 
 export default function Results(props) {
-  if (props.results.length === 0) {
+  const [country, setCountry] = useState(
+    props.results.length === 1
+      ? props.results[0]
+      : undefined
+  );
+
+  if (country) {
     return (
-      <div>No results for given search</div>
+      <Country {...country} />
     );
   }
 
-  if (props.results.length === 1) {
+  if (props.results.length === 0) {
     return (
-      <Country {...props.results[0]} />
+      <div>No results for given search</div>
     );
   }
 
@@ -21,7 +28,10 @@ export default function Results(props) {
 
   return (
     props.results.map((x) => (
-      <div key={x.name.common}>{x.name.common}</div>
+      <div key={x.name.common}>
+        <span>{x.name.common}</span>
+        <button onClick={() => setCountry(x)}>Show</button>
+      </div>
     ))
   );
 };
