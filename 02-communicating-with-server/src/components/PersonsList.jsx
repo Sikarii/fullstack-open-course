@@ -10,7 +10,7 @@ export default function List(props) {
     }
 
     await phonebook.delete(person.id);
-    props.onDelete?.(person.id);
+    props.onDelete?.(person);
   };
 
   return (

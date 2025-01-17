@@ -7,7 +7,11 @@ import PersonsFilter from "./components/PersonsFilter";
 
 import * as phonebook from "./api";
 
+import { NotificationContainer, useNotification } from "./components/Notification";
+
 export default function App() {
+  const notification = useNotification();
+
   const [search, setSearch] = useState("");
   const [persons, setPersons] = useState([]);
 
@@ -52,9 +56,12 @@ export default function App() {
       await phonebook.update(p.id, p);
 
       setPersons(newBook);
+      notification.success(`Updated ${newPerson.name}`);
     } else {
       const data = await phonebook.create(newPerson);
+
       setPersons((old) => [...old, data]);
+      notification.success(`Added ${newPerson.name}`);
     }
 
     setNewPerson({
@@ -63,9 +70,16 @@ export default function App() {
     });
   };
 
+  const deletePerson = (person) => {
+    setPersons((v) => v.filter((x) => x.id !== person.id));
+    notification.success(`Deleted ${person.name}`);
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <NotificationContainer />
 
       <PersonsFilter
         value={search}
@@ -86,7 +100,7 @@ export default function App() {
 
       <PersonsList
         persons={filteredPersons}
-        onDelete={(id) => setPersons((v) => v.filter((x) => x.id !== id))}
+        onDelete={deletePerson}
       />
     </div>
   );
