@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import Country from "./Country";
 
 export default function Results(props) {
-  const [country, setCountry] = useState(
-    props.results.length === 1
-      ? props.results[0]
-      : undefined
-  );
+  const [country, setCountry] = useState();
+
+  useEffect(() => {
+    setCountry(
+      props.results.length === 1
+        ? props.results[0]
+        : undefined
+    );
+  }, [props.results]);
 
   if (country) {
     return (

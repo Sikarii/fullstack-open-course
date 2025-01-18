@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import Results from "./components/Results";
 
-import * as countryApi from "./api";
+import * as countryApi from "./api/country";
 
 export default function App() {
   const [search, setSearch] = useState("");
